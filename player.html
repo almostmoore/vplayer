@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <title id="title"></title>
+    <style>
+        body {
+            background: black;
+            padding: 0;
+            margin: 0;
+        }
+
+        #player {
+            position: absolute;
+            height: 100%;
+            left: 50%;
+            transform: translate(-50%);
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <video id="player" controls></video>
+
+    <script>
+        let url = new URL(location.href);
+        let player = document.querySelector('#player');
+        let source = url.searchParams.get("src");
+
+        document.querySelector("#title").innerText = url.searchParams.get("title");
+
+        let isM3U8 = source.endsWith(".m3u8");
+        let canPlayM3U8 = player.canPlayType('application/vnd.apple.mpegurl')
+            && player.canPlayType("application/x-mpegurl");
+
+        if(Hls.isSupported()) {
+            let hls = new Hls();
+            hls.loadSource(source);
+            hls.attachMedia(player);
+            hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                player.play();
+            });
+        } else if (isM3U8 && canPlayM3U8 || !isM3U8) {
+            player.src = source;
+            player.addEventListener('canplay',function() {
+                player.play();
+            });
+        }
+      </script>
+</body>
