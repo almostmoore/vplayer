@@ -10,3 +10,5 @@ Parameters:
 
 `title` - optional. Title of the page
 `src` - required. Source of the video
+
+Example link: https://vplayer.almostmoore.com/player.html?title=Hello&src=https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8
